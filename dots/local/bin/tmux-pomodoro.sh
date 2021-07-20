@@ -4,7 +4,7 @@ curr_window=$(tmux display-message -p '#{window_id}')
 
 while : 
 do
-  termdown 3s
+  termdown 25m
   if [[ "$?" -ne 0 ]]; then break; fi
 
   work_window=$(tmux display-message -p '#{window_id}')
@@ -13,7 +13,7 @@ do
   termdown -t "break" 0
   if [[ "$?" -ne 0 ]]; then break; fi
 
-  termdown 3s
+  termdown 5m
   if [[ "$?" -ne 0 ]]; then break; fi
 
   termdown -t "let's work" 0
