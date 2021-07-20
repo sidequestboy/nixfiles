@@ -9,18 +9,30 @@
   home.username = "jamie";
   home.homeDirectory = "/home/jamie";
 
+  home.file.".tmux.conf".source = ./dots/tmux.conf;
+  home.file.".local/lib/tmux/install-tpm.sh".source = ./dots/local/lib/tmux/install-tpm.sh;
+  home.file.".local/lib/tmux/renumber-sessions.sh".source = ./dots/local/lib/tmux/renumber-sessions.sh;
+  home.file.".local/bin/tmux-pomodoro.sh".source = ./dots/local/bin/tmux-pomodoro.sh;
+  home.file.".SpaceVim.d/init.toml".source = ./dots/SpaceVim.d/init.toml;
+
+  home.packages = [
+    pkgs.spacevim
+    pkgs.tmux
+  ];
+
   programs.git = {
     enable = true;
     userName = "Jamie Macdonald";
     userEmail = "jamie.alban@gmail.com";
   };
 
-  programs.neovim = {
-    enable = true;
-    plugins = with pkgs.vimPlugins; [
-      vim-nix
-    ];
-  };
+#programs.neovim = {
+#    enable = true;
+#    plugins = with pkgs.vimPlugins; [
+#      vim-nix
+#      spacevim
+#    ];
+#  };
 
   programs.zsh = {
     enable = true;
@@ -35,7 +47,7 @@
       EDITOR = "nvim";
       FZF_DEFAULT_COMMAND = "rg --hidden --files";
       LC_CTYPE = "en_US.UTF-8";
-      LESS = "--mouse --wheel-lines=3";
+      LESS = "-R --mouse --wheel-lines=3";
       NVIM_LISTEN_ADDRESS = "/tmp/nvimsocket";
       PATH = "$HOME/.npm-global/bin:$HOME/.local/bin:$PATH";
       TERMINAL = "alacritty";
@@ -65,6 +77,9 @@
       ue = "systemctl --user edit --full";
     };
     initExtra = ''
+      if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+        exec tmux
+      fi
       bindkey "^P" up-line-or-search
       bindkey "^N" down-line-or-search
       bindkey '^?' backward-delete-char
