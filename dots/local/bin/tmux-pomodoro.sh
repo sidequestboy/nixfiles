@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+tmux rename-window "pomodoro"
+
 curr_window=$(tmux display-message -p '#{window_id}')
 
 while : 
