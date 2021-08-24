@@ -13,10 +13,8 @@
   home.file.".local/lib/tmux/install-tpm.sh".source = ./dots/local/lib/tmux/install-tpm.sh;
   home.file.".local/lib/tmux/renumber-sessions.sh".source = ./dots/local/lib/tmux/renumber-sessions.sh;
   home.file.".local/bin/tmux-pomodoro.sh".source = ./dots/local/bin/tmux-pomodoro.sh;
-  home.file.".SpaceVim.d/init.toml".source = ./dots/SpaceVim.d/init.toml;
 
   home.packages = [
-    pkgs.spacevim
     pkgs.tmux
   ];
 
@@ -26,13 +24,19 @@
     userEmail = "jamie.alban@gmail.com";
   };
 
-#programs.neovim = {
-#    enable = true;
-#    plugins = with pkgs.vimPlugins; [
-#      vim-nix
-#      spacevim
-#    ];
-#  };
+  programs.neovim = {
+    enable = true;
+    plugins = with pkgs.vimPlugins; [
+      vim-nix
+      vim-pug
+      vim-airline
+      {
+        plugin = vim-airline-themes;
+        config = "let g:airline_theme='base16_gruvbox_dark_hard'";
+      }
+    ];
+    vimAlias = true;
+  };
 
   programs.zsh = {
     enable = true;
@@ -49,11 +53,13 @@
       LC_CTYPE = "en_US.UTF-8";
       LESS = "-R --mouse --wheel-lines=3";
       NVIM_LISTEN_ADDRESS = "/tmp/nvimsocket";
-      PATH = "$HOME/.npm-global/bin:$HOME/.local/bin:$PATH";
       TERMINAL = "alacritty";
+      PATH = "$HOME/.local/bin:$PATH:$NPM_PACKAGES/bin";
+      MANPATH = "$\{MANPATH-$(manpath)\}:$NPM_PACKAGES/share/man";
     };
     autocd = true;
     localVariables = {
+      NPM_PACKAGES = "$HOME/.npm-packages";
       LS_DEFAULT_ARGS = [ "--color=auto" "-CF" "--group-directories-first" ];
     };
     enableCompletion = true;
