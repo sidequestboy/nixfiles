@@ -14,6 +14,8 @@
   home.file.".local/lib/tmux/renumber-sessions.sh".source = ./dots/local/lib/tmux/renumber-sessions.sh;
   home.file.".local/bin/tmux-pomodoro.sh".source = ./dots/local/bin/tmux-pomodoro.sh;
 
+  xdg.configFile."nvim/coc-settings.json".source = ./dots/config/nvim/coc-settings.json;
+
   home.packages = [
     pkgs.tmux
   ];
@@ -28,7 +30,15 @@
     enable = true;
     plugins = with pkgs.vimPlugins; [
       vim-nix
-      vim-pug
+      {
+        plugin = vim-pug;
+        config = ''
+          augroup pug
+            autocmd!
+            autocmd FileType pug setlocal shiftwidth=2 softtabstop=2 expandtab
+          augroup END
+        '';
+      }
       vim-airline
       {
         plugin = vim-airline-themes;
@@ -41,10 +51,24 @@
           set updatetime=100
         '';
       }
+      coc-nvim
     ];
     extraConfig = ''
       let mapleader = ","
+      augroup javascript
+        autocmd!
+        autocmd FileType javascript setlocal shiftwidth=2 softtabstop=2 expandtab
+      augroup END
+
+      "last position
+      augroup lastposition
+        autocmd!
+        autocmd BufWinLeave *.* mkview
+        autocmd BufWinEnter *.* silent! loadview
+      augroup END
     '';
+    coc = {  };
+
     vimAlias = true;
   };
 
