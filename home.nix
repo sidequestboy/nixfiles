@@ -42,6 +42,9 @@
         '';
       }
     ];
+    extraConfig = ''
+      let mapleader = ","
+    '';
     vimAlias = true;
   };
 
