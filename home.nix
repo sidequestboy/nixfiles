@@ -34,6 +34,13 @@
         plugin = vim-airline-themes;
         config = "let g:airline_theme='base16_gruvbox_dark_hard'";
       }
+      {
+        plugin = vim-gitgutter;
+        config = ''
+          highlight! link SignColumn LineNr
+          set updatetime=100
+        '';
+      }
     ];
     vimAlias = true;
   };
